@@ -1,4 +1,4 @@
-package com.hadouken900.redisImpl;
+package com.hadouken900.redisImpl.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

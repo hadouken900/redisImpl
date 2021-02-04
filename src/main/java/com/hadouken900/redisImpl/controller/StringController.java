@@ -1,42 +1,44 @@
-package com.hadouken900.redisImpl;
+package com.hadouken900.redisImpl.controller;
+import com.hadouken900.redisImpl.service.StringService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.Enumeration;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 public class StringController {
 
-    private final ConcurrentHashMap<String, String> stringData = new ConcurrentHashMap<>();
+    @Autowired
+    private StringService stringService;
 
     @PostConstruct
     public void loadData() {
-        stringData.put("1", "some");
-        stringData.put("2", "body");
-        stringData.put("3", "once");
+        stringService.put("1", "some");
+        stringService.put("2", "body");
+        stringService.put("3", "once");
     }
 
     @GetMapping("/strings")
     public Map<String, String> getAllStrings() {
-        return stringData;
+        return stringService.getAll();
     }
 
     @GetMapping("/strings/{key}")
     public String getStringValue(@PathVariable String key) {
-        return stringData.get(key);
+        return stringService.get(key);
     }
 
     @GetMapping("/strings/keys")
     public Enumeration<String> getStringKeys() {
-        return stringData.keys();
+        return stringService.getKeys();
     }
 
     @PostMapping("/strings/{key}/{value}")
     public void setStringValue(@PathVariable String key,
                          @PathVariable String value) {
-        stringData.put(key,value);
+        stringService.put(key,value);
     }
 
     @PostMapping("/strings/{key}/{value}/{ex}")
@@ -45,26 +47,12 @@ public class StringController {
                                @PathVariable int ex) {
 
 
-        stringData.put(key, value);
+        stringService.putWithEx(key, value,ex);
 
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(ex*1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                finally {
-                    stringData.remove(key);
-                }
-            }
-        });
-        t1.start();
     }
 
     @DeleteMapping("/strings/{key}")
     public void delStringKey(@PathVariable String key) {
-        stringData.remove(key);
+        stringService.remove(key);
     }
 }

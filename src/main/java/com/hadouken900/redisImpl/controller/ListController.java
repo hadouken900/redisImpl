@@ -1,4 +1,4 @@
-package com.hadouken900.redisImpl;
+package com.hadouken900.redisImpl.controller;
 
 import org.springframework.web.bind.annotation.*;
 
