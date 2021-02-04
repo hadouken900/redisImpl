@@ -2,6 +2,7 @@ package com.hadouken900.redisImpl.repo;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,5 +28,9 @@ public class ListRepo {
 
     public List<String> remove(String listName) {
         return listData.remove(listName);
+    }
+
+    public Enumeration<String> getKeys() {
+        return listData.keys();
     }
 }

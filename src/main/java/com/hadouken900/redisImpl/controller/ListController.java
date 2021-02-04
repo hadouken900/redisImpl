@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,9 @@ public class ListController {
         return listService.getAll();
     }
 
+    @GetMapping("/lists/keys")
+    public Enumeration<String> getKeys() {return listService.getKeys();}
+
     @GetMapping("/lists/{listName}")
     public List<String> getList(@PathVariable String listName) {
         return listService.get(listName);
@@ -43,8 +47,6 @@ public class ListController {
     @GetMapping("/lists/{listName}/{index}")
     public String getValueFromList(@PathVariable String listName,
                                    @PathVariable int index) {
-
-
         return listService.getValue(listName, index);
     }
 
@@ -53,6 +55,14 @@ public class ListController {
                          @PathVariable int index,
                          @PathVariable String value) {
         return listService.setValue(listName, index, value);
+    }
+
+    @PostMapping("/lists/{listName}/{index}/{value}/{ex}")
+    public void setValueWithListEx(@PathVariable String listName,
+                                   @PathVariable int index,
+                                   @PathVariable String value,
+                                   @PathVariable int ex) {
+        listService.setValueWithTTL(listName,index,value,ex);
     }
 
     @DeleteMapping("/lists/{listName}")

@@ -1,11 +1,11 @@
 package com.hadouken900.redisImpl.service;
 
-import com.hadouken900.redisImpl.exception.WrongIndexException;
 import com.hadouken900.redisImpl.repo.ListRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +28,8 @@ public class ListService {
     }
 
     public String getValue(String listName, int index) {
-        return listRepo.get(listName).size() > index ? listRepo.get(listName).get(index) : null;
+
+        return listRepo.get(listName).size() > index ? listRepo.get(listName).get(index) : "wrong index - " + index;
     }
 
     public void remove(String listName) {
@@ -49,7 +50,6 @@ public class ListService {
             }
             else {
                 result = "wrong index - " + index;
-                throw new WrongIndexException(result);
             }
         } else {
             listRepo.put(listName, new ArrayList<>());
@@ -59,7 +59,6 @@ public class ListService {
                result = "(integer) " +stringList1.size();
             } else {
                 result = "wrong index - " + index;
-                throw new WrongIndexException(result);
             }
         }
         return result;
@@ -75,14 +74,48 @@ public class ListService {
                 result =  "(integer) " + stringList.size();
             } else {
                 result = "wrong index - " + index;
-                throw new WrongIndexException(result);
 
             }
         }
         else {
             result =  "wrong index - " + index;
-            throw new WrongIndexException(result);
         }
         return result;
+    }
+
+    public Enumeration<String> getKeys() {
+        return listRepo.getKeys();
+    }
+
+    public void setValueWithTTL(String listName, int index, String value, int ex) {
+        List<String> stringList = listRepo.get(listName);
+        if (stringList == null) {
+            setValue(listName,index,value);
+        }
+        Thread thread1 = new Thread(new TTLRunnable(ex,listName));
+        thread1.start();
+    }
+
+    class TTLRunnable implements Runnable {
+
+        private final int ex;
+        private final String key;
+
+        public TTLRunnable(int ex, String key) {
+            this.ex = ex;
+            this.key = key;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(ex* 1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            finally {
+                remove(key);
+            }
+        }
     }
 }
