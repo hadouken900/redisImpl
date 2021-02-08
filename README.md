@@ -19,7 +19,7 @@ test task for avito. implementation of redis on spring boot + spring mvc
 ### Lists:
 - GET /lists - print all lists
 - GET /lists/keys - print all keys
-- GET /lists/{listName} - redis get list
+- GET /lists/{listName} - redis lget
 - GET /lists/{listName}/{index} - redis get string with index from list
 - POST /lists/{listName}/{index}/{value} - redis put value with index in list
 - POST /lists/{listName}/{index}/{value}/{ex} - redis put value with index in list with ttl
@@ -27,6 +27,13 @@ test task for avito. implementation of redis on spring boot + spring mvc
 - DELETE /lists/{listName}/{index} - redis del value from list
 
 ### Maps
+- GET /maps/{key} - redis hget
+- GET /maps - print all maps
+- GET /maps/keys - print all keys
+- GET /maps/{key}/{value} - get value from map
+- POST /maps/{key}/{innerKey}/{value} - redis hset
+- DELETE /maps/{key} - redis delete map
+- DELETE /maps/{key}/{value} - redis hdel
 
 
 
