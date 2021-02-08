@@ -19,14 +19,14 @@ public class ListController {
     @PostConstruct
     public void loadData() {
         List<String> l1 = new ArrayList<>();
-        l1.add("vasya");
-        l1.add("petya");
-        l1.add("vanya");
+        l1.add("one");
+        l1.add("two");
+        l1.add("three");
 
         List<String> l2 = new ArrayList<>();
-        l2.add("myaso");
-        l2.add("ryba");
-        l2.add("kurica");
+        l2.add("a");
+        l2.add("b");
+        l2.add("c");
         listService.put("1",l1);
         listService.put("2",l2);
     }

@@ -16,8 +16,8 @@ public class StringController {
     @PostConstruct
     public void loadData() {
         stringService.put("1", "some");
-        stringService.put("2", "body");
-        stringService.put("3", "once");
+        stringService.put("2", "test");
+        stringService.put("3", "strings");
     }
 
     @GetMapping("/strings")
