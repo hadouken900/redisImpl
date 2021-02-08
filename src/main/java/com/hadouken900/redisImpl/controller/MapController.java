@@ -2,9 +2,7 @@ package com.hadouken900.redisImpl.controller;
 
 import com.hadouken900.redisImpl.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Enumeration;
 import java.util.Map;
@@ -34,6 +32,26 @@ public class MapController {
     public String getValueFromMap(@PathVariable String key,
                                   @PathVariable String value) {
         return mapService.getValueFromMap(key,value);
+    }
+
+    @PostMapping("maps/{key}/{innerKey}/{value}")
+    public String setValue(@PathVariable String key,
+                           @PathVariable String innerKey,
+                           @PathVariable String value){
+        return mapService.setValue(key,innerKey,value);
+    }
+
+    @DeleteMapping("maps/{key}")
+    public String delValue(@PathVariable String key) {
+
+        return mapService.delValue(key);
+    }
+
+    @DeleteMapping("maps/{key}/{innerKey}")
+    public String delInnerValue(@PathVariable String key,
+                                @PathVariable String innerKey) {
+
+        return mapService.delInnerValue(key,innerKey);
     }
 
 
